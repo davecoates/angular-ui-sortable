@@ -1,7 +1,7 @@
 Angular UI ngRepeat Sortable 
 ============================
 
-Angular directive that uses jQuery UI sortable and updates a collection defined by ng-repeat. The angular-ui sortable 
+Angular directive that uses jQuery UI sortable and updates a collection defined by ng-repeat. The [angular-ui](https://github.com/angular-ui) sortable 
 works great with ng-model but I needed to be able to filter results and still re-order in a sensible manner.
 
 Works with filtering by positioning element relative to visible items,
