@@ -210,20 +210,31 @@ angular.module('ui.directives').directive('uiRepeatSortable', [ 'ui.config', '$p
 			 * @return integer 
 			 */
 			var extractInsertionIndex = function(item) {
-				var end = item.index();
-				var adjacentItem, i;
-				var sel = getVisibleItemSelector();
+				var end = item.index(),
+					sel = getVisibleItemSelector(),
+					insertAfter = true,
+					adjacentItem, i;
 
 				adjacentItem = item.prev(sel);
 				if (!adjacentItem.length) {
 					adjacentItem = item.next(sel);
+					insertAfter = false;
 				}
+				if (adjacentItem.length === 0) {
+					// No adjacent items in destination sortable
+					return 0;
+				}
+
 				adjacentItem = angular.element(adjacentItem).scope()[valueIdent];
 
 				for (i=0;i<collection.length;i++) {
 					if (collection[i] === adjacentItem) {
 						end = i;
-						if (item.index() > i) {
+						// Offset index if we are inserting after. Note the 
+						// check against the original index is because if
+						// original item is before us in collection it won't be
+						// once we remove it so no offset is required.
+						if (insertAfter && i <= item.data('uiRepeatSortable').index) {
 							end++;
 						}
 						break;
