@@ -1,0 +1,28 @@
+.container-fluid { padding-top: 10px; }
+.column {
+	width: 200px;
+	border: 1px solid #999;
+	border-radius: 5px;
+	float: left;
+	margin-right: 5px;
+}
+.column .header {
+	padding: 5px;
+	font-size: 2em;
+	border-bottom: 1px solid #999;
+}
+.column .todo {
+	padding: 5px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	margin: 2px;
+}
+.no-todo {
+	padding: 5px;
+}
+.column .todo .date {
+	font-size: 0.8em;
+	color: #aaa;
+	display: block;
+}
+.ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; }
