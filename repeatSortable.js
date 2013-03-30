@@ -6,6 +6,14 @@
       this.events = {};
       this.eventSortRequired = {};
 
+      /**
+       * Register event
+       *
+       * @param String eventName one of start, stop, remove, receive, update, 
+       * deactivate
+       * @param Function callback 
+       * @param Integer priority higher numbers get called first
+       */
       this.registerEvent = function(eventName, callback, priority) {
         if (undefined === priority) {
           priority = 0;
@@ -20,6 +28,9 @@
         this.eventSortRequired[eventName] = true;
       };
 
+      /**
+       * Trigger event 
+       */
       this.triggerEvent = function(eventName, e, ui) {
         if (!angular.isArray(this.events[eventName])) return;
 
@@ -97,7 +108,6 @@
 
     }
 
-
   ];
 
   /**
@@ -121,22 +131,27 @@
         // jQuery UI Sortable Events follow
 
         onStart = function(e, ui) {
-          var index;
-          var data = {
-            // Original index in the collection regardless of what
-            // filters are applied
-            index: null,
-            // Original item object
-            collectionItem: angular.element(ui.item).scope()[ctrl.valueIdent]
-          };
+          var index,
+              element = angular.element(ui.item),
+              collectionItem = element.scope()[ctrl.valueIdent];
           for (var i=0;i<ctrl.collection.length;i++) {
-            if (ctrl.collection[i] === data.collectionItem) {
+            if (ctrl.collection[i] === collectionItem) {
               index = i;
             }
           }
 
-          // Save position of dragged item
-          data.index = index;
+          var data = {
+            // Original index in the collection regardless of what
+            // filters are applied
+            index: index,
+            // This contains all items that will be moved. Normally this will
+            // be only one item but it can be modified (eg. selectable
+            // directive will add all selected items here)
+            sortingItems: [
+              {index: index, element: element, item: collectionItem}
+            ]
+          };
+
           ui.item.data('uiRepeatSortable', data);
         };
 
@@ -148,25 +163,55 @@
         };
 
         onReceive = function(e, ui) {
-          var data = ui.item.data('uiRepeatSortable');
+          var data = ui.item.data('uiRepeatSortable'), i, end;
           data.relocate = true;
           // Add item and update collection
-          ctrl.collection.splice(extractInsertionIndex(ui.item), 0, data.moved);
+          for (i=data.sortingItems.length-1;i>=0;i--) {
+            if (data.sortingItems[i].index === data.index) {
+              end = extractInsertionIndex(data.sortingItems[i].element, data.index);
+              break;
+            }
+          }
+          for (i=0;i<data.sortingItems.length;i++) {
+            ctrl.collection.splice(end+i, 0, data.sortingItems[i].item);
+          }
           ctrl.collectionGetter.assign(scope, ctrl.collection);
         };
 
         onRemove = function(e, ui) {
           // Remove item to be re-added and saved in onReceive
-          var data = ui.item.data('uiRepeatSortable');
-          data.moved = ctrl.collection.splice(data.index, 1)[0];
+          var data = ui.item.data('uiRepeatSortable'), i;
+          data.sortingItems.sort(function(a,b) { return a.index > b.index; });
+          data.moved = [];
+          for (i=data.sortingItems.length-1;i>=0;i--) {
+            data.moved.push(ctrl.collection.splice(data.sortingItems[i].index, 1)[0]);
+          }
         };
 
         onStop = function(e, ui) {
           var data = ui.item.data('uiRepeatSortable');
           if (data.resort && !data.relocate) {
-            var end = extractInsertionIndex(ui.item);
-            var start = data.index;
-            ctrl.collection.splice(end, 0, ctrl.collection.splice(start, 1)[0]);
+            var end, i, originalIndexKey;
+
+            data.sortingItems.sort(function(a,b) { return a.index > b.index; });
+
+            // First remove all items that are going to be moved
+            for (i=data.sortingItems.length-1;i>=0;i--) {
+              if (data.sortingItems[i].index === data.index) {
+                originalIndexKey = i;
+              }
+              ctrl.collection.splice(data.sortingItems[i].index, 1);
+            }
+
+            // Then work out insertion index 
+            end = extractInsertionIndex(data.sortingItems[originalIndexKey].element, data.sortingItems[originalIndexKey].index);
+
+            // Then add all items removed back in
+            for (i=0;i<data.sortingItems.length;i++) {
+              ctrl.collection.splice(end+i, 0, data.sortingItems[i].item);
+            }
+
+            // Save collection
             ctrl.collectionGetter.assign(scope, ctrl.collection);
           }
           
@@ -250,17 +295,26 @@
          *
          * @return integer 
          */
-        var extractInsertionIndex = function(item) {
-          var end = item.index(),
-            sel = getVisibleItemSelector(),
+        var extractInsertionIndex = function(item, originalIndex) {
+          var sel = getVisibleItemSelector(),
             insertAfter = true,
-            adjacentItem, i;
+            end, adjacentItem, i;
 
-          adjacentItem = item.prev(sel);
+          adjacentItem = item.prev(sel);//.not('.ui-selected')
+          // Look through adjacent items till we find one that does not have
+          // the ui-selected class (for some reason .not('.ui-selected') did
+          // not work if we were dragging to the start of the list.
+          while(adjacentItem.length && adjacentItem.hasClass('ui-selected')) {
+            adjacentItem = adjacentItem.prev(sel);
+          }
           if (!adjacentItem.length) {
             adjacentItem = item.next(sel);
+            while(adjacentItem.length && adjacentItem.hasClass('ui-selected')) {
+              adjacentItem = adjacentItem.next(sel);
+            }
             insertAfter = false;
           }
+
           if (adjacentItem.length === 0) {
             // No adjacent items in destination sortable
             return 0;
@@ -275,7 +329,7 @@
               // check against the original index is because if
               // original item is before us in collection it won't be
               // once we remove it so no offset is required.
-              if (insertAfter && i <= item.data('uiRepeatSortable').index) {
+              if (insertAfter) {/* && i <= originalIndex) {*/
                 end++;
               }
               break;
