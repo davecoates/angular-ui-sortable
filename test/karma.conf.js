@@ -20,7 +20,8 @@ files = [
   'test/lib/angular/angular.js',
   'test/lib/angular/angular-mocks.js',
   'test/lib/angular-ui/module.js',
-  'repeatSortable.js',
+  'module.js',
+  'directives/*.js',
   'test/unit/**/*.js'
 ];
 

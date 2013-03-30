@@ -1,6 +1,6 @@
-angular.module('ui.directives').directive('uiSelectable', [function() {
+angular.module('uis').directive('uisSelectable', [function() {
 	return {
-		require: 'uiRepeatSortable',
+		require: 'uisSortable',
     priority: -1, 
 		link: function(scope, iElement, iAttrs, ctrl) {
 			var onReceive, onRemove, onStart, onStop, onUpdate, onDeactivate;
@@ -10,7 +10,7 @@ angular.module('ui.directives').directive('uiSelectable', [function() {
 			var sortOpts;				// options passed to ui-sortable
 			var placeholderSelector;
 			
-			opts = angular.extend({}, scope.$eval(iAttrs.uiSelectable));
+			opts = angular.extend({}, scope.$eval(iAttrs.uisSelectable));
 			
 			if (opts.moveWithSortable) {
 				// It would be nice if we could just register listeners on the sort events. Unfortunately
@@ -18,7 +18,7 @@ angular.module('ui.directives').directive('uiSelectable', [function() {
 				// to our changes after these have fire so here we modify the options to uiSortable to
 				// include our own listeners which will always be fired after uiSortable but before any
 				// other custom listeners passed through to uiSortable by the user.
-				sortOpts = scope.$eval(iAttrs.uiRepeatSortable) || {};
+				sortOpts = scope.$eval(iAttrs.uisSortable) || {};
 				placeholderSelector = '.'+(sortOpts.placeholder || 'ui-sortable-placeholder');
 				
 				// Helper function that clones all selected items
@@ -50,8 +50,8 @@ angular.module('ui.directives').directive('uiSelectable', [function() {
 
 				onStart = function(event, ui) {
 					if (ui.item.hasClass('ui-selected')) {
-            var sortData = ui.item.data('uiRepeatSortable');
-            var data = ui.item.data('uiRepeatSortable'), index; 
+            var sortData = ui.item.data('uisSortable');
+            var data = ui.item.data('uisSortable'), index; 
 						$(sortOpts.items || '> *', iElement).not(placeholderSelector).each(function(index, item) {
 							if ($(item).hasClass('ui-selected')) {
                 element = angular.element(item),
@@ -73,7 +73,7 @@ angular.module('ui.directives').directive('uiSelectable', [function() {
 
 							}
 						});
-            ui.item.data('uiRepeatSortable', sortData);
+            ui.item.data('uisSortable', sortData);
 					} 
 				};
 

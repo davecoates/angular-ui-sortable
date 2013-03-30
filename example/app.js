@@ -1,4 +1,4 @@
-var demo = angular.module('demo', ['ui']);
+var demo = angular.module('demo', ['uis']);
 demo.controller('DemoCtrl', function($scope) {
 	$scope.orderProp = '';
 

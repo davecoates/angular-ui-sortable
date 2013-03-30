@@ -1,7 +1,7 @@
 (function(angular) {
   "use strict";
 
-  var uiRepeatSortableController = ['$scope', '$attrs', '$element', '$parse',
+  var uisSortableController = ['$scope', '$attrs', '$element', '$parse',
     function($scope, $attr, $element, $parse) {
       this.events = {};
       this.eventSortRequired = {};
@@ -120,13 +120,13 @@
    *
    * If you set orderBy then sorting will be disabled
    */
-  angular.module('ui.directives').directive('uiRepeatSortable', [ 'ui.config', '$parse', function(uiConfig, $parse) {
+  angular.module('uis').directive('uisSortable', [ '$parse', function($parse) {
     return {
-      controller: uiRepeatSortableController,
+      controller: uisSortableController,
       link: function(scope, iElement, iAttrs, ctrl) {
         var onReceive, onRemove, onStart, onStop, onUpdate, opts;
 
-        opts = angular.extend({}, uiConfig.sortable, scope.$eval(iAttrs.uiRepeatSortable));
+        opts = angular.extend({}, scope.$eval(iAttrs.uisSortable));
 
         // jQuery UI Sortable Events follow
 
@@ -152,18 +152,18 @@
             ]
           };
 
-          ui.item.data('uiRepeatSortable', data);
+          ui.item.data('uisSortable', data);
         };
 
         onUpdate = function(e, ui) {
           // Flag update required. We only need to do something if we
           // haven't moved sortable (ie. onReceive hasn't fired)
           // See onStop
-          ui.item.data('uiRepeatSortable').resort = true;
+          ui.item.data('uisSortable').resort = true;
         };
 
         onReceive = function(e, ui) {
-          var data = ui.item.data('uiRepeatSortable'), i, end;
+          var data = ui.item.data('uisSortable'), i, end;
           data.relocate = true;
           // Add item and update collection
           for (i=data.sortingItems.length-1;i>=0;i--) {
@@ -180,7 +180,7 @@
 
         onRemove = function(e, ui) {
           // Remove item to be re-added and saved in onReceive
-          var data = ui.item.data('uiRepeatSortable'), i;
+          var data = ui.item.data('uisSortable'), i;
           data.sortingItems.sort(function(a,b) { return a.index > b.index; });
           data.moved = [];
           for (i=data.sortingItems.length-1;i>=0;i--) {
@@ -189,7 +189,7 @@
         };
 
         onStop = function(e, ui) {
-          var data = ui.item.data('uiRepeatSortable');
+          var data = ui.item.data('uisSortable');
           if (data.resort && !data.relocate) {
             var end, i, originalIndexKey;
 

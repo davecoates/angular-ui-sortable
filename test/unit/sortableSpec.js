@@ -1,5 +1,5 @@
-describe('uiRepeatSortable', function() {
-  beforeEach(module('ui.directives'));
+describe('uisSortable', function() {
+  beforeEach(module('uis'));
 
   var element, ctrl, scope;
   beforeEach(function() {
@@ -11,13 +11,13 @@ describe('uiRepeatSortable', function() {
         {id: 3}
       ];
       scope.orderProp = '';
-      element = $compile('<div ui-repeat-sortable="{connectWith: \'.column\'}"><div ng-repeat="item in items | orderBy: orderProp">item number {{item}}</div></div>')(scope);
+      element = $compile('<div uis-sortable="{connectWith: \'.column\'}"><div ng-repeat="item in items | orderBy: orderProp">item number {{item}}</div></div>')(scope);
     }); 
   });
 
   it('should instance sortable and identify repeat items', function() {
       expect(element.hasClass("ui-sortable")).toBeTruthy();
-      ctrl = element.controller('uiRepeatSortable');
+      ctrl = element.controller('uisSortable');
       expect(ctrl.valueIdent).toEqual('item');
       expect(ctrl.collection).toEqual(scope.items);
   });

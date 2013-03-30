@@ -1,4 +1,4 @@
-describe('uiRepeatSortable directive', function() {
+describe('uisRepeatSortable directive', function() {
 
   var itemHeight = 20, itemWidth = 100;
     

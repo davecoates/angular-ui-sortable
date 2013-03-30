@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="ui">
+<html lang="en" ng-app="uis">
 	<head>
 		<title>Test Sortable</title>
 		<script type="text/javascript" src="../lib/jquery/jquery-1.9.1.js"></script>
@@ -7,8 +7,8 @@
 		<script type="text/javascript" src="../lib/jquery/jquery.simulate.js"></script>
     <script type="text/javascript" src="../lib/angular/angular.js"></script>
     <script type="text/javascript" src="../lib/angular/angular-mocks.js"></script>
-		<script type="text/javascript" src="../lib/angular-ui/module.js"></script>
-		<script type="text/javascript" src="../../repeatSortable.js"></script>
+		<script type="text/javascript" src="../../module.js"></script>
+		<script type="text/javascript" src="../../directives/sortable.js"></script>
     <script type="text/javascript" src="controller.js"></script>
 		<script>
 		</script>
@@ -23,10 +23,10 @@
 		</style>
 	</head>
 	<body ng-controller="SortableTest">
-		<ul id="list-1" class="column" ui-repeat-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
+		<ul id="list-1" class="column" uis-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
       <li ng-repeat="item in items[0] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
 		</ul>
-		<ul id="list-2" class="column" ui-repeat-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
+		<ul id="list-2" class="column" uis-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
       <li ng-repeat="item in items[1] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
 		</ul>
 
