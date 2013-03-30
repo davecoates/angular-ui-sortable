@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ui">
+	<head>
+		<title>Test Sortable</title>
+		<script type="text/javascript" src="../lib/jquery/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../lib/jquery/jquery-ui.js"></script>
+		<script type="text/javascript" src="../lib/jquery/jquery.simulate.js"></script>
+    <script type="text/javascript" src="../lib/angular/angular.js"></script>
+    <script type="text/javascript" src="../lib/angular/angular-mocks.js"></script>
+		<script type="text/javascript" src="../lib/angular-ui/module.js"></script>
+		<script type="text/javascript" src="../../repeatSortable.js"></script>
+    <script type="text/javascript" src="../../ui.selectable.js"></script>
+    <script type="text/javascript" src="controller.js"></script>
+		<script>
+		</script>
+		<style>
+			ul.column {
+				width: 100px;
+				float: left;
+			}
+			ul li {
+				height: 20px;
+			}
+      .ui-sortable-selected {
+        display: none !important;
+      }
+		</style>
+	</head>
+	<body ng-controller="SortableTest">
+    <ul id="list-1" class="column" ui-repeat-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}" ui-selectable="{moveWithSortable: true, filter: '> li'}">
+      <li ng-repeat="item in items[0] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
+		</ul>
+    <ul id="list-2" class="column" ui-repeat-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}" ui-selectable="{moveWithSortable: true, filter: '> li'}">
+      <li ng-repeat="item in items[1] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
+		</ul>
+    <div style="clear: both">
+      <input type="text" ng-model="search" />
+    </div>
+	</body>
+</html>
