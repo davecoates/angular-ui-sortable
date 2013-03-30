@@ -6,7 +6,7 @@ files = [
   'test/e2e/**/*.js'
 ];
 
-autoWatch = false;
+autoWatch = true;
 
 browsers = ['Chrome'];
 

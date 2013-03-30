@@ -23,11 +23,15 @@
 		</style>
 	</head>
 	<body ng-controller="SortableTest">
-		<ul id="list-1" class="column" ui-repeat-sortable="{connectWith: '.column'}">
-			<li ng-repeat="item in items[0]">{{item.title}}</li>
+		<ul id="list-1" class="column" ui-repeat-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
+      <li ng-repeat="item in items[0] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
 		</ul>
-		<ul id="list-2" class="column" ui-repeat-sortable="{connectWith: '.column'}">
-			<li ng-repeat="item in items[1]">{{item.title}}</li>
+		<ul id="list-2" class="column" ui-repeat-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
+      <li ng-repeat="item in items[1] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
 		</ul>
+
+    <div style="clear: both">
+      <input type="text" ng-model="search" />
+    </div>
 	</body>
 </html>
