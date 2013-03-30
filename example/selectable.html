@@ -33,7 +33,7 @@
 						</p>
 					<p ng-show="orderProp != ''">(sorting on tasks disabled due to ordering)</p>
 					<div class="columns" ui-repeat-sortable="{items: '.column', handle: '.header', helper: true, 	tolerance: 'pointer'}">
-            <div class="column" ng-repeat="column in columns" ui-repeat-sortable="{handle: '> .title', items: '> .todo', connectWith: '.column'}">
+            <div class="column" ng-repeat="column in columns" ui-repeat-sortable="{handle: '> .title', items: '> .todo', connectWith: '.column'}" ui-selectable="{filter: '> .todo', moveWithSortable: true}">
 							<div class="header">{{column.label}}</div>
 							<div class="no-todo" ng-show="column.tasks.length == 0">
 								<em>Nothing to do!</em>
@@ -52,6 +52,7 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
 		<script src="https://raw.github.com/angular-ui/angular-ui/master/build/angular-ui.js"></script>	
 		<script type="text/javascript" src="../repeatSortable.js"></script>
+    <script type="text/javascript" src="../ui.selectable.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</body>
 </html>

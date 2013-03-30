@@ -26,3 +26,7 @@
 	display: block;
 }
 .ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; }
+.ui-sortable-selected {
+  display: none !important;
+}
+.column .todo.ui-selected { border: 1px dashed red; }
