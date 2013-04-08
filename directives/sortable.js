@@ -54,9 +54,10 @@
           this.nodeValue.match(/^[\s]*ngRepeat:/);
       });
 
-      if (!ngRepeat) {
+      if (!ngRepeat.length) {
         throw new Error('Required ng-repeat not found');
       }
+
 
       // ================================================================
       // Taken & modified from ng-repeat directive to identify collection
@@ -104,7 +105,10 @@
       // ================================================================
 
       this.collectionGetter = $parse(rhs.split('|')[0]);
-      this.collection = this.collectionGetter($scope);
+
+      this.getCollection = function() {
+        return this.collectionGetter($scope);
+      };
 
     }
 
@@ -122,6 +126,7 @@
    */
   angular.module('uis').directive('uisSortable', [ '$parse', function($parse) {
     return {
+      priority: -1,
       controller: uisSortableController,
       link: function(scope, iElement, iAttrs, ctrl) {
         var onReceive, onRemove, onStart, onStop, onUpdate, opts;
@@ -134,8 +139,8 @@
           var index,
               element = angular.element(ui.item),
               collectionItem = element.scope()[ctrl.valueIdent];
-          for (var i=0;i<ctrl.collection.length;i++) {
-            if (ctrl.collection[i] === collectionItem) {
+          for (var i=0;i<ctrl.getCollection().length;i++) {
+			if (ctrl.getCollection()[i] === collectionItem) {
               index = i;
             }
           }
@@ -173,9 +178,9 @@
             }
           }
           for (i=0;i<data.sortingItems.length;i++) {
-            ctrl.collection.splice(end+i, 0, data.sortingItems[i].item);
+            ctrl.getCollection().splice(end+i, 0, data.sortingItems[i].item);
           }
-          ctrl.collectionGetter.assign(scope, ctrl.collection);
+          ctrl.collectionGetter.assign(scope, ctrl.getCollection());
         };
 
         onRemove = function(e, ui) {
@@ -184,7 +189,7 @@
           data.sortingItems.sort(function(a,b) { return a.index > b.index; });
           data.moved = [];
           for (i=data.sortingItems.length-1;i>=0;i--) {
-            data.moved.push(ctrl.collection.splice(data.sortingItems[i].index, 1)[0]);
+            data.moved.push(ctrl.getCollection().splice(data.sortingItems[i].index, 1)[0]);
           }
         };
 
@@ -200,7 +205,7 @@
               if (data.sortingItems[i].index === data.index) {
                 originalIndexKey = i;
               }
-              ctrl.collection.splice(data.sortingItems[i].index, 1);
+              ctrl.getCollection().splice(data.sortingItems[i].index, 1);
             }
 
             // Then work out insertion index 
@@ -208,11 +213,11 @@
 
             // Then add all items removed back in
             for (i=0;i<data.sortingItems.length;i++) {
-              ctrl.collection.splice(end+i, 0, data.sortingItems[i].item);
+              ctrl.getCollection().splice(end+i, 0, data.sortingItems[i].item);
             }
 
             // Save collection
-            ctrl.collectionGetter.assign(scope, ctrl.collection);
+            ctrl.collectionGetter.assign(scope, ctrl.getCollection());
           }
           
           if (data.resort || data.relocate) {
@@ -298,6 +303,7 @@
         var extractInsertionIndex = function(item, originalIndex) {
           var sel = getVisibleItemSelector(),
             insertAfter = true,
+            collection = ctrl.getCollection(),
             end, adjacentItem, i;
 
           adjacentItem = item.prev(sel);//.not('.ui-selected')
@@ -322,8 +328,8 @@
 
           adjacentItem = angular.element(adjacentItem).scope()[ctrl.valueIdent];
 
-          for (i=0;i<ctrl.collection.length;i++) {
-            if (ctrl.collection[i] === adjacentItem) {
+          for (i=0;i<collection.length;i++) {
+            if (collection[i] === adjacentItem) {
               end = i;
               // Offset index if we are inserting after. Note the 
               // check against the original index is because if

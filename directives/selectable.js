@@ -5,10 +5,10 @@ angular.module('uis').directive('uisSelectable', [function() {
 		link: function(scope, iElement, iAttrs, ctrl) {
 			var onReceive, onRemove, onStart, onStop, onUpdate, onDeactivate;
 
-			var helper;					// helper function for sortable
-			var opts;           // options for ui-selectable
-			var sortOpts;				// options passed to ui-sortable
-			var placeholderSelector;
+			var helper,					// helper function for sortable
+          opts,           // options for ui-selectable
+          sortOpts,				// options passed to ui-sortable
+          placeholderSelector;
 			
 			opts = angular.extend({}, scope.$eval(iAttrs.uisSelectable));
 			
@@ -50,30 +50,32 @@ angular.module('uis').directive('uisSelectable', [function() {
 
 				onStart = function(event, ui) {
 					if (ui.item.hasClass('ui-selected')) {
-            var sortData = ui.item.data('uisSortable');
-            var data = ui.item.data('uisSortable'), index; 
+						var sortData = ui.item.data('uisSortable');
+						var data = ui.item.data('uisSortable'), index; 
 						$(sortOpts.items || '> *', iElement).not(placeholderSelector).each(function(index, item) {
+							var element = angular.element(item),
+                  collectionItem = element.scope()[ctrl.valueIdent],
+                  collection, i;
 							if ($(item).hasClass('ui-selected')) {
-                element = angular.element(item),
-                collectionItem = element.scope()[ctrl.valueIdent];
-                for (var i=0;i<ctrl.collection.length;i++) {
-                  if (ctrl.collection[i] === collectionItem) {
-                    index = i;
-                  }
-                }
-                // ignore dragged item - this is handled by ui-sortable
-                if (index === data.index) {
-                  return;
-                }
-                sortData.sortingItems.push({
-                  element: element,
-                  item: collectionItem,
-                  index: index
-                });
+								collection = ctrl.getCollection();
+								for (i=0;i<collection.length;i++) {
+									if (collection[i] === collectionItem) {
+										index = i;
+									}
+								}
+								// ignore dragged item - this is handled by ui-sortable
+								if (index === data.index) {
+									return;
+								}
+								sortData.sortingItems.push({
+										element: element,
+										item: collectionItem,
+										index: index
+								});
 
 							}
 						});
-            ui.item.data('uisSortable', sortData);
+						ui.item.data('uisSortable', sortData);
 					} 
 				};
 
