@@ -140,7 +140,7 @@
               element = angular.element(ui.item),
               collectionItem = element.scope()[ctrl.valueIdent];
           for (var i=0;i<ctrl.getCollection().length;i++) {
-			if (ctrl.getCollection()[i] === collectionItem) {
+            if (ctrl.getCollection()[i] === collectionItem) {
               index = i;
             }
           }
