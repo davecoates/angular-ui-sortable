@@ -12,7 +12,7 @@ in a sensible manner.
 ## Directives
 
 Both directives must be applied to an element that also has ng-repeat
-applied. Only the arraya form is supported - (key, value) form is not 
+applied. Only the array form is supported - (key, value) form is not 
 supported as it doesn't have an order.
 
 ### Sortable
@@ -30,7 +30,7 @@ below for more details.
 
 	<ANY ng-repeat="{repeat_expression}" uis-selectable>
 
-You can pass an object to uis-sortable which will be used to initialise
+You can pass an object to uis-selectable which will be used to initialise
 jQuery UI selectable. Pass moveWithSortable to make all selected items
 move whenever a selected items is dragged using UI sortable.
 
