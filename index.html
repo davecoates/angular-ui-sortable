@@ -1,1 +1,84 @@
-Sortable
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="demo" ng-controller="DemoCtrl">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">Sortable Example</a>
+          <div class="navbar-form pull-right">
+            <input type="text" class="search-query" ng-model="search" placeholder="Search..."/ >
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span4">
+            <h1>Data</h1>
+          <pre>{{columns | json }}</pre>
+          </div>
+          <div class="span8">
+            <p>
+              <label>Order: 
+                <select ng-model="orderProp">
+                  <option value=""></option>
+                  <option value="date">Date</option>
+                  <option value="title">Title</option>
+                </select>
+              </label>
+            </p>
+            <p ng-show="orderProp != ''">(sorting on tasks disabled due to ordering)</p>
+            <div class="columns" uis-sortable="{items: '.column', handle: '.header', helper: true, 	tolerance: 'pointer'}">
+              <div class="column" ng-repeat="column in columns" uis-sortable="{handle: '> .title', items: '> .todo', connectWith: '.column'}">
+                <div class="header">{{column.label}}</div>
+                <div class="no-todo" ng-show="column.tasks.length == 0">
+                  <em>Nothing to do!</em>
+                </div>
+                <div class="todo" ng-repeat="task in column.tasks | orderBy:orderProp | filter:search">
+                  <span class="date">{{ task.date | date }}</span>
+                  <span class="title">{{task.title}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--[if lt IE 9]>
+      <script src="bower_components/es5-shim/es5-shim.js"></script>
+      <script src="bower_components/json3/lib/json3.min.js"></script>
+      <![endif]-->
+
+      <!-- build:js scripts/vendor.js -->
+      <!-- bower:js -->
+      <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
+      <!-- endbower -->
+      <!-- endbuild -->
+
+      <!-- build:js({.tmp,app}) scripts/scripts.js -->
+      <script src="app/scripts/app.js"></script>
+      <script src="app/scripts/controllers/main.js"></script>
+      <script src="app/scripts/directives/sortable.js"></script>
+      <!-- endbuild -->
+    </body>
+  </html>
