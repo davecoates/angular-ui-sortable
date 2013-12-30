@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Test Sortable</title>
+    <script type="text/javascript" src="../bower_components/jquery/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="../bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="../scripts/app.js"></script>
+    <script type="text/javascript" src="../scripts/directives/sortable.js"></script>
+    <script type="text/javascript" src="controller.js"></script>
+    <script>
+    </script>
+    <style>
+      ul.column {
+        width: 100px;
+        float: left;
+      }
+      ul li {
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body  ng-app="uis" ng-controller="SortableTest">
+    <ul id="list-1" class="column" uis-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
+      <li class="list-1-{{$index}}" ng-repeat="item in items[0] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
+    </ul>
+    <ul id="list-2" class="column" uis-sortable="{connectWith: '.column', handle: '.handle', tolerance: 'pointer'}">
+      <li class="list-2-{{$index}}" ng-repeat="item in items[1] | filter:search"><span class="handle">*</span>{{item.title}}<span class="id">{{item.id}}</span></li>
+    </ul>
+
+    <div style="clear: both">
+      <input type="text" ng-model="search" />
+    </div>
+  </body>
+</html>
