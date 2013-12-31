@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+  <head>
+    <title>Sortable Examples</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+  </head>
+  <body ng-controller="DemoCtrl"></body>
+</html>
+
+
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -16,7 +27,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="app/styles/main.css">
+    <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
   <body ng-app="demo" ng-controller="DemoCtrl">
@@ -45,14 +56,17 @@
                 </select>
               </label>
             </p>
+            <p>Click and drag column headers to re-order columns.</p>
+            <p>Click icon to drag TODO's or click and drag anywhere else to select multiple items before moving them.</p>
             <p ng-show="orderProp != ''">(sorting on tasks disabled due to ordering)</p>
             <div class="columns" uis-sortable="{items: '.column', handle: '.header', helper: true, 	tolerance: 'pointer'}">
-              <div class="column" ng-repeat="column in columns" uis-sortable="{handle: '> .title', items: '> .todo', connectWith: '.column'}">
+              <div class="column" ng-repeat="column in columns" uis-sortable="{handle: '> i', items: '> .todo', connectWith: '.column'}" uis-selectable="{filter: '> .todo', moveWithSortable: true}">
                 <div class="header">{{column.label}}</div>
                 <div class="no-todo" ng-show="column.tasks.length == 0">
                   <em>Nothing to do!</em>
                 </div>
                 <div class="todo" ng-repeat="task in column.tasks | orderBy:orderProp | filter:search">
+                  <i class="icon-move"></i>
                   <span class="date">{{ task.date | date }}</span>
                   <span class="title">{{task.title}}</span>
                 </div>
@@ -61,6 +75,7 @@
           </div>
         </div>
       </div>
+    </div>
 
       <!--[if lt IE 9]>
       <script src="bower_components/es5-shim/es5-shim.js"></script>
