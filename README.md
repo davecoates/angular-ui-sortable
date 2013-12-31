@@ -9,6 +9,8 @@ The [angular-ui](https://github.com/angular-ui) sortable works great with
 ng-model but not if you want to filter results and still re-order results 
 in a sensible manner.
 
+See http://davecoates.github.io/angular-ui-sortable/ for demo.
+
 ## Directives
 
 Both directives must be applied to an element that also has ng-repeat
