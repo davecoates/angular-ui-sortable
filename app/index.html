@@ -47,12 +47,13 @@
             </p>
             <p ng-show="orderProp != ''">(sorting on tasks disabled due to ordering)</p>
             <div class="columns" uis-sortable="{items: '.column', handle: '.header', helper: true, 	tolerance: 'pointer'}">
-              <div class="column" ng-repeat="column in columns" uis-sortable="{handle: '> .title', items: '> .todo', connectWith: '.column'}">
+              <div class="column" ng-repeat="column in columns" uis-sortable="{handle: '> i', items: '> .todo', connectWith: '.column'}">
                 <div class="header">{{column.label}}</div>
                 <div class="no-todo" ng-show="column.tasks.length == 0">
                   <em>Nothing to do!</em>
                 </div>
                 <div class="todo" ng-repeat="task in column.tasks | orderBy:orderProp | filter:search">
+                  <i class="icon-move"></i>
                   <span class="date">{{ task.date | date }}</span>
                   <span class="title">{{task.title}}</span>
                 </div>
