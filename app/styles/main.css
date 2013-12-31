@@ -24,9 +24,22 @@
 	font-size: 0.8em;
 	color: #aaa;
 	display: block;
+  padding-left: 20px;
 }
+.column .todo .title {
+  margin-left: 20px;
+}
+.column .todo i {  float: left; margin-top: 5px;}
 .ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; }
 .ui-sortable-selected {
   display: none !important;
 }
 .column .todo.ui-selected { border: 1px dashed red; }
+.ui-selectable-helper {
+  border: 1px dashed red;
+  position: absolute;
+  z-index: 100;
+}
+.column .todo.ui-selecting {
+  background-color: #FFFCD9;
+}
