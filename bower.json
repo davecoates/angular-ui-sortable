@@ -1,6 +1,6 @@
 {
-  "name": "angular-ui-sortable-new",
-  "version": "0.0.0",
+  "name": "angular-ui-sortable",
+  "version": "1.0.0",
   "dependencies": {
     "angular": "1.2.6",
     "json3": "~3.2.6",
