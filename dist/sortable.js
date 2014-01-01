@@ -1,3 +1,5 @@
+angular.module('uis', []);
+
 (function(angular) {
   'use strict';
 
