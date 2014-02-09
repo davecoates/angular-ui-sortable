@@ -67,20 +67,23 @@
       var expression =
         ngRepeat[0].nodeValue.split(':').splice(1).join(':');
 
-      var match = expression.match(/^\s*(.+)\s+in\s+(.*)\s*$/),
-      lhs, rhs, orderBy, keyIdent;
-      if (! match) {
-        throw new Error('Expected ngRepeat in form of \'_item_ in '+
-                        '_collection_\' but got \'' + expression + '\'.');
+      var match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/),
+        lhs, rhs, orderBy, keyIdent;
+
+      if (!match) {
+        throw Error('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
+          expression);
       }
+
       lhs = match[1];
       rhs = match[2];
+
       match = lhs.match(/^(?:([\$\w]+)|\(([\$\w]+)\s*,\s*([\$\w]+)\))$/);
       if (!match) {
-        throw new Error('\'item\' in \'item in collection\' should be '+
-                        'identifier or (key, value) but got \'' +
-                        lhs + '\'.');
+        throw Error('iidexp', "'_item_' in '_item_ in _collection_' should be an identifier or '(_key_, _value_)' expression, but got '{0}'.",
+                                                                    lhs);
       }
+
       if (match[1] === undefined) {
         throw new Error('Cannot sort objects; \'(key, value)\' in collection '+
                         'form not supported');
